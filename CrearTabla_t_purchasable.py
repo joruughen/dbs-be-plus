@@ -1,17 +1,11 @@
 import boto3
 
 # Crear un cliente de DynamoDB
-dynamodb = boto3.client('dynamodb')
+dynamodb = boto3.client('dynamodb', region_name='us-east-1')
 
 for stage in ['dev', 'test', 'prod']:
-    import boto3
-
-    # Crear un cliente de DynamoDB
-    dynamodb = boto3.client('dynamodb')
-
-
     response = dynamodb.create_table(
-    TableName=f'{stage}_t_purchasable',
+        TableName=f'{stage}_t_purchasable',
         AttributeDefinitions=[
             {'AttributeName': 'tenant_id', 'AttributeType': 'S'},
             {'AttributeName': 'store_type', 'AttributeType': 'S'},
@@ -20,14 +14,14 @@ for stage in ['dev', 'test', 'prod']:
         ],
         KeySchema=[
             {'AttributeName': 'tenant_id', 'KeyType': 'HASH'},
-            {'AttributeName': 'store_type', 'KeyType': 'RANGE'}
+            {'AttributeName': 'product_id', 'KeyType': 'RANGE'}
         ],
         GlobalSecondaryIndexes=[
             {
                 'IndexName': 'store_type_index',
                 'KeySchema': [
-                    {'AttributeName': 'store_type', 'KeyType': 'HASH'},
-                    {'AttributeName': 'product_id', 'KeyType': 'RANGE'}
+                    {'AttributeName': 'product_id', 'KeyType': 'HASH'},
+                    {'AttributeName': 'store_type', 'KeyType': 'RANGE'}
                 ],
                 'Projection': {'ProjectionType': 'ALL'},
             }
@@ -44,5 +38,4 @@ for stage in ['dev', 'test', 'prod']:
         ],
         BillingMode='PAY_PER_REQUEST'
     )
-
     print("Tabla `t_purchasable` creada:", response)
