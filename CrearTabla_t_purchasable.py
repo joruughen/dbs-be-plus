@@ -16,9 +16,21 @@ for stage in ['dev', 'test', 'prod']:
             {'AttributeName': 'tenant_id', 'KeyType': 'HASH'},
             {'AttributeName': 'product_id', 'KeyType': 'RANGE'}
         ],
+        #creado por ERROR
         GlobalSecondaryIndexes=[
             {
                 'IndexName': 'store_type_index',
+                'KeySchema': [
+                    {'AttributeName': 'product_id', 'KeyType': 'HASH'},
+                    {'AttributeName': 'store_type', 'KeyType': 'RANGE'}
+                ],
+                'Projection': {'ProjectionType': 'ALL'},
+            }
+        ],
+        #
+        GlobalSecondaryIndexes=[
+            {
+                'IndexName': 'store_type_index_2',
                 'KeySchema': [
                     {'AttributeName': 'store_type', 'KeyType': 'HASH'},
                     {'AttributeName': 'product_id', 'KeyType': 'RANGE'}
